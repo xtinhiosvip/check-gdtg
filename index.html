@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHECKGDTG.VN - KIỂM TRA UY TÍN</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #090806;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, #66480035, transparent 40%),
+        radial-gradient(circle at 80% 70%, #a66c0030, transparent 40%);
+    z-index: -1;
+}
+
+.rainbow {
+    background: linear-gradient(
+        90deg,
+        red, orange, yellow, lime,
+        cyan, blue, violet, red
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: rainbow 4s linear infinite;
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #8e6a24;
+    background: #100e09;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    color: #ffd76a;
+    text-shadow: 0 0 15px #ffb70080;
+}
+
+.logo span {
+    color: #fff0ad;
+}
+
+.badge {
+    border: 1px solid #b58b31;
+    color: #ffe29a;
+    padding: 8px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 35px auto;
+    padding: 15px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: clamp(27px, 6vw, 43px);
+    margin-bottom: 15px;
+    font-weight: 900;
+}
+
+.hero p {
+    color: #b9b2a2;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.gold-line {
+    width: 120px;
+    height: 3px;
+    margin: 20px auto;
+    background: linear-gradient(90deg, #8b5c00, #fff1a0, #b8860b);
+    border-radius: 5px;
+    box-shadow: 0 0 15px #ffcc48;
+}
+
+.card {
+    background: linear-gradient(145deg, #1c180f, #0e0c08);
+    border: 1px solid #8d6b2b;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 0 30px #c18b1b12;
+    margin-bottom: 22px;
+}
+
+.card-title {
+    color: #ffe19a;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.desc {
+    font-size: 13px;
+    color: #a9a18f;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #e8c979;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    background: #080705;
+    border: 1px solid #66501e;
+    border-radius: 10px;
+    padding: 16px;
+    color: white;
+    outline: none;
+    font-size: 15px;
+    margin-bottom: 17px;
+}
+
+input:focus {
+    border-color: #ffd76a;
+    box-shadow: 0 0 12px #ffcf4425;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    transition: .25s;
+}
+
+.check-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 10px;
+    color: #211500;
+    font-size: 15px;
+    background: linear-gradient(90deg, #b8860b, #ffe9a1, #d4a52c);
+    box-shadow: 0 0 20px #d6a62b25;
+}
+
+.check-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px #ffcf5080;
+}
+
+.result {
+    display: none;
+    animation: show .4s ease;
+}
+
+@keyframes show {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-head {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5d779, #8a5d08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+    color: #211500;
+}
+
+.result-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffe39a;
+    word-break: break-word;
+}
+
+.status {
+    margin: 18px 0;
+    padding: 16px;
+    border-radius: 10px;
+    background: #242012;
+    border: 1px solid #80652a;
+    color: #ffe19a;
+    font-weight: bold;
+    line-height: 1.7;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid #ffffff12;
+    font-size: 13px;
+}
+
+.info-row span:first-child {
+    color: #a9a18f;
+}
+
+.info-row span:last-child {
+    text-align: right;
+    color: #f3dfad;
+}
+
+.search-links {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.search-link {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px;
+    border: 1px solid #9a752d;
+    border-radius: 10px;
+    color: #ffdf8c;
+    background: #211b0e;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.search-link:hover {
+    background: #3a2c12;
+}
+
+.notice {
+    font-size: 12px;
+    color: #8f8879;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    border-top: 1px solid #5c471c;
+    color: #776d58;
+    font-size: 12px;
+    line-height: 2;
+}
+
+@media(max-width:600px) {
+    header {
+        padding: 17px;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .card {
+        padding: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ CHECK<span>GDTG</span>.VN</div>
+    <div class="badge">✦ TOOLS CHECK UY TÍN</div>
+</header>
+
+<div class="container">
+
+    <section class="hero">
+        <h1 class="rainbow">CHECK UY TÍN 7 MÀU</h1>
+        <div class="gold-line"></div>
+        <p>
+            Hệ thống tra cứu thông tin công khai<br>
+            Tham khảo báo chí, Google và các nguồn trên Internet
+        </p>
+    </section>
+
+    <section class="card">
+        <div class="card-title">🔍 TOOLS CHECK</div>
+        <p class="desc">
+            Nhập ID, tên hoặc biệt danh của người bạn muốn tra cứu.
+            Hệ thống sẽ tạo liên kết tìm kiếm thông tin công khai
+            để bạn tham khảo.
+        </p>
+
+        <label for="userId">ID / TÊN NGƯỜI CẦN CHECK</label>
+
+        <input
+            type="text"
+            id="userId"
+            placeholder="Nhập ID hoặc tên người cần kiểm tra..."
+            maxlength="150"
+        >
+
+        <button class="check-btn" onclick="checkUser()">
+            ✨ XÁC NHẬN CHECK
+        </button>
+    </section>
+
+    <section class="card result" id="result">
+        <div class="card-title">📋 KẾT QUẢ TRA CỨU</div>
+
+        <div class="result-head">
+            <div class="avatar">👤</div>
+            <div>
+                <div class="result-name" id="resultName"></div>
+                <div style="color:#968b73;font-size:12px;margin-top:7px">
+                    Hồ sơ tra cứu công khai
+                </div>
+            </div>
+        </div>
+
+        <div class="status">
+            ⚠️ CHƯA ĐỦ DỮ LIỆU XÁC MINH
+            <div style="font-size:12px;font-weight:normal;margin-top:8px">
+                Chưa thể kết luận người này uy tín hay có hành vi lừa đảo.
+                Hãy tham khảo các nguồn bên dưới để kiểm tra thêm.
+            </div>
+        </div>
+
+        <div class="info-row">
+            <span>Đối tượng</span>
+            <span id="infoName"></span>
+        </div>
+
+        <div class="info-row">
+            <span>Trạng thái</span>
+            <span>Đang chờ xác minh</span>
+        </div>
+
+        <div class="info-row">
+            <span>Nguồn dữ liệu</span>
+            <span>Google / Google News</span>
+        </div>
+
+        <div class="info-row">
+            <span>Kết luận</span>
+            <span>Chưa xác định</span>
+        </div>
+
+        <div class="search-links">
+            <a id="googleLink" class="search-link" target="_blank" rel="noopener">
+                🌐 TÌM KIẾM TRÊN GOOGLE
+            </a>
+
+            <a id="newsLink" class="search-link" target="_blank" rel="noopener">
+                📰 TÌM KIẾM TRÊN GOOGLE NEWS
+            </a>
+
+            <a id="scamLink" class="search-link" target="_blank" rel="noopener">
+                🔎 TÌM THÔNG TIN CẢNH BÁO LỪA ĐẢO
+            </a>
+        </div>
+
+        <p class="notice">
+            Lưu ý: Kết quả tìm kiếm có thể chứa thông tin sai lệch,
+            trùng tên hoặc chưa được xác minh. Không nên kết luận một
+            người lừa đảo chỉ dựa vào tin đồn hoặc việc không tìm thấy
+            thông tin trên Internet.
+        </p>
+    </section>
+
+    <section class="card">
+        <div class="card-title">🛡️ NGUYÊN TẮC KIỂM TRA</div>
+
+        <p class="desc">
+            ✔️ Ưu tiên thông tin từ báo chí và nguồn chính thức.<br><br>
+            ✔️ Đối chiếu nhiều nguồn độc lập.<br><br>
+            ✔️ Phân biệt thông tin đã xác minh và cáo buộc chưa được xác minh.<br><br>
+            ✔️ Không tự động kết luận một người là lừa đảo khi thiếu bằng chứng.
+        </p>
+    </section>
+
+</div>
+
+<footer class="footer">
+    <div class="rainbow" style="font-weight:bold;font-size:17px">
+        CHECKGDTG.VN
+    </div>
+    Công cụ tra cứu thông tin công khai<br>
+    © 2026 CHECKGDTG.VN - ALL RIGHTS RESERVED
+</footer>
+
+<script>
+function checkUser() {
+    const input = document.getElementById("userId");
+    const name = input.value.trim();
+
+    if (!name) {
+        alert("Vui lòng nhập ID hoặc tên cần kiểm tra!");
+        input.focus();
+        return;
+    }
+
+    const query = encodeURIComponent('"' + name + '"');
+
+    document.getElementById("resultName").textContent = name;
+    document.getElementById("infoName").textContent = name;
+
+    document.getElementById("googleLink").href =
+        "https://www.google.com/search?q=" + query;
+
+    document.getElementById("newsLink").href =
+        "https://news.google.com/search?q=" + query;
+
+    document.getElementById("scamLink").href =
+        "https://www.google.com/search?q=" +
+        encodeURIComponent('"' + name + '" lừa đảo OR cảnh báo');
+
+    const result = document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+document.getElementById("userId").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        checkUser();
+    }
+});
+</script>
+
+</body>
+</html>
